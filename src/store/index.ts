@@ -23,7 +23,6 @@ export const store = createStore<Estado>({
     },
     'ALTERA_PROJETO' (state, projeto: IProjeto) {
       const index = state.projetos.findIndex(proj => proj.id === projeto.id)
-      console.log(index)
       state.projetos[index] = projeto
     }
   }
