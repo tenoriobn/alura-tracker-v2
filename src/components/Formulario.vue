@@ -25,7 +25,7 @@
       </div>
 
       <div class="column">
-        <Temporizador @aoTemporizadorFinalizado="finalizarTarefa" />
+        <Temporizador @aoTemporizadorFinalizado="salvarTarefa" />
       </div>
     </div>
   </div>
@@ -33,9 +33,10 @@
 
 <script lang="ts">
   import { defineComponent, computed } from 'vue';
-  import { useStore } from 'vuex';
+  import { useStore } from '@/store';
   import Temporizador from "./Temporizador.vue";
-  import { key } from "@/store"
+  import { NOTIFICAR } from '@/store/tipo-mutacoes';
+  import { TipoNotificacao } from '@/interfaces/INotificacao';
 
   export default defineComponent({
     name: 'FormularioComponent',
@@ -50,21 +51,31 @@
       }
     },
     methods: {
-      finalizarTarefa(tempoDecorrido: number) : void {
-        this.$emit('aoSalvarTarefa', 
-          { 
-            duracaoEmSegundos: tempoDecorrido, 
-            descricao: this.descricao,
-            projeto: this.projetos.find(proj => proj.id === this.idProjeto)
-          }
-        )
-        this.descricao = '';
+      salvarTarefa (tempoEmSegundos: number) : void {    
+        const projeto = this.projetos.find((proj) => proj.id == this.idProjeto);
+
+        if(!projeto) {
+          this.store.commit(NOTIFICAR, {
+              titulo: 'Ops!',
+              texto: "Selecione um projeto antes de finalizar a tarefa!",
+              tipo: TipoNotificacao.FALHA,
+          });
+          return; 
+        }
+
+        this.$emit('aoSalvarTarefa', {
+          duracaoEmSegundos: tempoEmSegundos,
+          descricao: this.descricao,
+          projeto: projeto
+        })
+        this.descricao = ''
       }
     },
     setup() {
-      const store = useStore(key);
+      const store = useStore();
 
       return {
+        store,
         projetos: computed(() => store.state.projetos)
       }
     }

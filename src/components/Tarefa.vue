@@ -18,9 +18,9 @@
   export default defineComponent({
     name: 'TarefaComponent',
     components: {
-    Cronometro,
-    Box
-},
+      Cronometro,
+      Box
+    },
     props: { 
       tarefa: { 
         type: Object as  PropType<ITarefa>,
