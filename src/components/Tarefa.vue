@@ -5,6 +5,9 @@
       <div class="column">
         <Cronometro :tempoEmSegundos="tarefa.duracaoEmSegundos" />
       </div>
+      <div class="column is-4">
+        {{ tarefa.projeto?.nome || 'N/D' }}
+      </div>
     </div>
   </Box>
 </template>

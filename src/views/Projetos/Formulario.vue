@@ -23,7 +23,6 @@
   import { ALTERA_PROJETO, ADICIONA_PROJETO } from "@/store/tipo-mutacoes"
   import { TipoNotificacao } from "@/interfaces/INotificacao";
   import useNotificador from '@/hooks/notificador';
-  // import { notificacaoMixin } from '@/mixins/notificar';
 
   export default defineComponent({
     name: 'FormularioComponent',
@@ -32,7 +31,6 @@
         type: String
       }
     },
-    // mixins: [notificacaoMixin],
     mounted() {
       if(this.id) {
         const projeto = this.store.state.projetos.find(proj => proj.id === this.id)
